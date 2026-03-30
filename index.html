@@ -1,6 +1,4 @@
-
-
-       <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
@@ -32,6 +30,7 @@
             text-shadow: 0 0 10px rgba(255, 49, 49, 0.8), 0 0 20px rgba(255, 49, 49, 0.4);
         }
 
+        /* PREMIUM BACKGROUND GRID & GLOW */
         .bg-mesh {
             position: fixed;
             inset: 0;
@@ -76,6 +75,7 @@
             box-shadow: 0 10px 30px rgba(255, 49, 49, 0.1);
         }
 
+        /* ANIMATED REVEALS */
         .reveal {
             opacity: 0;
             transform: translateY(30px);
@@ -114,29 +114,8 @@
             transform: scale(1.05);
         }
 
-        .memory-fab {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background: var(--neon-red);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 40;
-            box-shadow: 0 0 20px rgba(255, 49, 49, 0.4);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-        }
-
-        .memory-fab:hover {
-            transform: scale(1.1) rotate(15deg);
-            box-shadow: 0 0 30px rgba(255, 49, 49, 0.6);
-        }
-
-        #event-details-view, #memory-wall-view {
+        /* VIEW TRANSITIONS */
+        #event-details-view {
             display: none;
             position: fixed;
             top: 0; left: 0;
@@ -149,47 +128,16 @@
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .view-active #main-content, .wall-active #main-content { 
+        .view-active #main-content { 
             opacity: 0;
             pointer-events: none;
             transform: scale(0.98);
         }
         
-        .view-active #event-details-view,
-        .wall-active #memory-wall-view { 
+        .view-active #event-details-view { 
             display: block;
             opacity: 1;
             transform: scale(1);
-        }
-
-        .memory-slot {
-            aspect-ratio: 1/1;
-            background: rgba(255,255,255,0.02);
-            border: 1px dashed rgba(255,255,255,0.1);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .memory-slot img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .memory-slot:hover {
-            border-color: var(--neon-red);
-            background: rgba(255,49,49,0.05);
-        }
-
-        .polaroid-frame {
-            padding: 10px 10px 30px 10px;
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
         }
 
         .nav-link {
@@ -219,15 +167,11 @@
     <div class="bg-mesh"></div>
     <div class="bg-glow-aura"></div>
 
-    <div class="memory-fab" onclick="openMemoryWall()" title="Memory Wall">
-        <i data-lucide="camera" class="text-white w-7 h-7"></i>
-    </div>
-
     <!-- MAIN PAGE CONTENT -->
     <div id="main-content" class="transition-all duration-500">
         <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300 py-4 px-4 md:px-12">
             <div class="max-w-7xl mx-auto flex justify-between items-center gap-4">
-                <div class="flex items-center gap-2 flex-shrink-0 cursor-pointer" onclick="window.location.reload()">
+                <div class="flex items-center gap-2 flex-shrink-0 cursor-pointer" onclick="window.scrollTo({top:0, behavior:'smooth'})">
                     <div class="w-8 h-8 md:w-10 md:h-10 bg-red-600 rounded-lg flex items-center justify-center font-bold text-lg md:text-xl shadow-[0_0_15px_rgba(255,49,49,0.3)]">C</div>
                     <span class="font-sync font-bold text-[10px] sm:text-xs md:text-lg tracking-tighter uppercase">Creative Conclave</span>
                 </div>
@@ -285,6 +229,16 @@
                     <span class="text-gray-400 font-light italic text-[10px] md:text-xs whitespace-nowrap">"Design is intelligence made visible" — Alina Wheeler</span>
                     <span class="w-2 h-2 bg-white/20 rounded-full"></span>
                 </div>
+                <div class="flex items-center gap-12 px-6">
+                    <span class="text-red-500 font-sync text-[10px] md:text-xs uppercase tracking-widest whitespace-nowrap">"Design is how it works" — Steve Jobs</span>
+                    <span class="w-2 h-2 bg-white/20 rounded-full"></span>
+                    <span class="text-gray-400 font-light italic text-[10px] md:text-xs whitespace-nowrap">"Innovation distinguishes between a leader and a follower"</span>
+                    <span class="w-2 h-2 bg-white/20 rounded-full"></span>
+                    <span class="text-red-500 font-sync text-[10px] md:text-xs uppercase tracking-widest whitespace-nowrap">"The best way to predict the future is to create it"</span>
+                    <span class="w-2 h-2 bg-white/20 rounded-full"></span>
+                    <span class="text-gray-400 font-light italic text-[10px] md:text-xs whitespace-nowrap">"Design is intelligence made visible" — Alina Wheeler</span>
+                    <span class="w-2 h-2 bg-white/20 rounded-full"></span>
+                </div>
             </div>
         </div>
 
@@ -292,12 +246,13 @@
         <section id="events" class="py-20 md:py-32 px-6 bg-black/40">
             <div class="max-w-7xl mx-auto text-center mb-16 reveal">
                 <h2 class="text-2xl md:text-4xl font-sync font-bold mb-4 uppercase tracking-tight">Core <span class="text-red-600">Events</span></h2>
-                <p class="text-gray-500 text-xs md:text-base px-4">Dive into our competitive tracks</p>
+                <p class="text-gray-500 text-xs md:text-base px-4">Explore our competitive symposium tracks</p>
+                
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mt-12 text-left">
                     <div onclick="showEventDetails('innovation-trail')" class="glass-card p-6 md:p-8 rounded-3xl cursor-pointer reveal">
                         <div class="text-red-500 mb-4 md:mb-6"><i data-lucide="map" class="w-8 h-8 md:w-10 md:h-10"></i></div>
                         <h3 class="text-lg md:text-2xl font-bold mb-2">Innovation Trail</h3>
-                        <p class="text-red-500 text-[10px] md:text-xs font-sync mb-3 md:mb-4 italic opacity-80 tracking-wide">"4-path logical treasure hunt"</p>
+                        <p class="text-red-500 text-[10px] md:text-xs font-sync mb-3 md:mb-4 italic opacity-80 tracking-wide">"Logical Treasure Hunt"</p>
                         <p class="text-gray-400 text-xs md:text-sm mb-6 leading-relaxed">Decrypt clues across campus in this high-stakes race.</p>
                         <div class="flex justify-between items-center text-[10px] text-gray-500 uppercase font-bold">
                             <span>9:00 AM – 12:00 PM</span>
@@ -308,8 +263,8 @@
                     <div onclick="showEventDetails('pitch-deck')" class="glass-card p-6 md:p-8 rounded-3xl cursor-pointer reveal stagger-1">
                         <div class="text-red-500 mb-4 md:mb-6"><i data-lucide="presentation" class="w-8 h-8 md:w-10 md:h-10"></i></div>
                         <h3 class="text-lg md:text-2xl font-bold mb-2">Pitch Deck</h3>
-                        <p class="text-red-500 text-[10px] md:text-xs font-sync mb-3 md:mb-4 italic opacity-80 tracking-wide">"Present your ideas"</p>
-                        <p class="text-gray-400 text-xs md:text-sm mb-6 leading-relaxed">Got the next big idea? Present it to our panel of experts.</p>
+                        <p class="text-red-500 text-[10px] md:text-xs font-sync mb-3 md:mb-4 italic opacity-80 tracking-wide">"Sell your vision"</p>
+                        <p class="text-gray-400 text-xs md:text-sm mb-6 leading-relaxed">Present your disruptive ideas to a panel of industry experts.</p>
                         <div class="flex justify-between items-center text-[10px] text-gray-500 uppercase font-bold">
                             <span>9:00 AM – 12:00 PM</span>
                             <span class="text-red-500">View Rules →</span>
@@ -320,7 +275,7 @@
                         <div class="text-red-500 mb-4 md:mb-6"><i data-lucide="hammer" class="w-8 h-8 md:w-10 md:h-10"></i></div>
                         <h3 class="text-lg md:text-2xl font-bold mb-2">Makeathon</h3>
                         <p class="text-red-500 text-[10px] md:text-xs font-sync mb-3 md:mb-4 italic opacity-80 tracking-wide">"Search. Scale. Solve"</p>
-                        <p class="text-gray-400 text-xs md:text-sm mb-6 leading-relaxed">Build a scalable solution for a real-world problem statement.</p>
+                        <p class="text-gray-400 text-xs md:text-sm mb-6 leading-relaxed">Build a scalable solution for real-world problems in real-time.</p>
                         <div class="flex justify-between items-center text-[10px] text-gray-500 uppercase font-bold">
                             <span>1:00 PM – 3:30 PM</span>
                             <span class="text-red-500">View Rules →</span>
@@ -330,7 +285,7 @@
                     <div onclick="showEventDetails('play-slay')" class="glass-card p-6 md:p-8 rounded-3xl cursor-pointer reveal">
                         <div class="text-red-500 mb-4 md:mb-6"><i data-lucide="gamepad-2" class="w-8 h-8 md:w-10 md:h-10"></i></div>
                         <h3 class="text-lg md:text-2xl font-bold mb-2">Play-Slay</h3>
-                        <p class="text-red-500 text-[10px] md:text-xs font-sync mb-3 md:mb-4 italic opacity-80 tracking-wide">"Play your game"</p>
+                        <p class="text-red-500 text-[10px] md:text-xs font-sync mb-3 md:mb-4 italic opacity-80 tracking-wide">"Esports Arena"</p>
                         <p class="text-gray-400 text-xs md:text-sm mb-6 leading-relaxed">The ultimate gaming arena. Strategy meets lightning skill.</p>
                         <div class="flex justify-between items-center text-[10px] text-gray-500 uppercase font-bold">
                             <span>1:00 PM – 3:30 PM</span>
@@ -341,7 +296,7 @@
                     <div onclick="showEventDetails('connect-4')" class="glass-card p-6 md:p-8 rounded-3xl cursor-pointer reveal stagger-1">
                         <div class="text-red-500 mb-4 md:mb-6"><i data-lucide="grid-3x3" class="w-8 h-8 md:w-10 md:h-10"></i></div>
                         <h3 class="text-lg md:text-2xl font-bold mb-2">Connect-4</h3>
-                        <p class="text-red-500 text-[10px] md:text-xs font-sync mb-3 md:mb-4 italic opacity-80 tracking-wide">"Draw the logic"</p>
+                        <p class="text-red-500 text-[10px] md:text-xs font-sync mb-3 md:mb-4 italic opacity-80 tracking-wide">"Logic Visualization"</p>
                         <p class="text-gray-400 text-xs md:text-sm mb-6 leading-relaxed">Visualize complex networks and logic in a time-bound challenge.</p>
                         <div class="flex justify-between items-center text-[10px] text-gray-500 uppercase font-bold">
                             <span>1:30 PM – 3:30 PM</span>
@@ -352,8 +307,8 @@
                     <div onclick="showEventDetails('content-creation')" class="glass-card p-6 md:p-8 rounded-3xl cursor-pointer reveal stagger-2">
                         <div class="text-red-500 mb-4 md:mb-6"><i data-lucide="clapperboard" class="w-8 h-8 md:w-10 md:h-10"></i></div>
                         <h3 class="text-lg md:text-2xl font-bold mb-2">Content Creation</h3>
-                        <p class="text-red-500 text-[10px] md:text-xs font-sync mb-3 md:mb-4 italic opacity-80 tracking-wide">"Find your inner director"</p>
-                        <p class="text-gray-400 text-xs md:text-sm mb-6 leading-relaxed">Capture the essence of the Conclave through your lens.</p>
+                        <p class="text-red-500 text-[10px] md:text-xs font-sync mb-3 md:mb-4 italic opacity-80 tracking-wide">"The Storyteller"</p>
+                        <p class="text-gray-400 text-xs md:text-sm mb-6 leading-relaxed">Capture the essence of the Conclave through your creative lens.</p>
                         <div class="flex justify-between items-center text-[10px] text-gray-500 uppercase font-bold">
                             <span>1:30 PM – 3:30 PM</span>
                             <span class="text-red-500">View Rules →</span>
@@ -371,28 +326,28 @@
                     <div class="p-4 md:p-6 glass-card rounded-2xl flex justify-between items-center reveal stagger-1 border-l-4 border-l-red-600">
                         <div>
                             <p class="text-red-500 font-bold text-[10px] md:text-sm uppercase tracking-tighter">9:00 AM - 12:00 PM</p>
-                            <h4 class="font-bold text-sm md:text-base uppercase">Innovation Trail & Pitch Deck</h4>
+                            <h4 class="font-bold text-sm md:text-base uppercase tracking-tight">Innovation Trail & Pitch Deck</h4>
                         </div>
                         <i data-lucide="sun" class="w-4 h-4 md:w-6 md:h-6 opacity-40"></i>
                     </div>
                     <div class="p-4 md:p-6 glass-card rounded-2xl flex justify-between items-center opacity-60 reveal stagger-2">
                         <div>
                             <p class="text-gray-400 font-bold text-[10px] md:text-sm uppercase tracking-tighter">12:00 PM - 1:00 PM</p>
-                            <h4 class="font-bold text-sm md:text-base uppercase">Networking Lunch Break</h4>
+                            <h4 class="font-bold text-sm md:text-base uppercase tracking-tight">Networking Lunch Break</h4>
                         </div>
                         <i data-lucide="coffee" class="w-4 h-4 md:w-6 md:h-6 opacity-40"></i>
                     </div>
                     <div class="p-4 md:p-6 glass-card rounded-2xl flex justify-between items-center reveal stagger-1 border-l-4 border-l-red-600">
                         <div>
                             <p class="text-red-500 font-bold text-[10px] md:text-sm uppercase tracking-tighter">1:00 PM - 3:30 PM</p>
-                            <h4 class="font-bold text-sm md:text-base uppercase">Makeathon & Play-Slay</h4>
+                            <h4 class="font-bold text-sm md:text-base uppercase tracking-tight">Makeathon & Play-Slay</h4>
                         </div>
                         <i data-lucide="zap" class="w-4 h-4 md:w-6 md:h-6 opacity-40"></i>
                     </div>
                     <div class="p-4 md:p-6 glass-card rounded-2xl flex justify-between items-center reveal stagger-2 border-l-4 border-l-red-600">
                         <div>
                             <p class="text-red-500 font-bold text-[10px] md:text-sm uppercase tracking-tighter">1:30 PM - 3:30 PM</p>
-                            <h4 class="font-bold text-sm md:text-base uppercase">Connect-4 & Content Creation</h4>
+                            <h4 class="font-bold text-sm md:text-base uppercase tracking-tight">Connect-4 & Content Creation</h4>
                         </div>
                         <i data-lucide="edit-3" class="w-4 h-4 md:w-6 md:h-6 opacity-40"></i>
                     </div>
@@ -431,6 +386,27 @@
                         </div>
                     </div>
                     <div class="glass-card p-6 rounded-2xl border-l-4 border-l-red-600 reveal stagger-3">
+                        <h4 class="font-bold text-sm md:text-lg mb-3 tracking-tight">Makeathon</h4>
+                        <div class="space-y-2 text-[11px] md:text-sm">
+                            <p class="flex items-center gap-2 text-gray-400 font-medium"><i data-lucide="user" class="w-3 h-3 text-red-500"></i> LEAD: Add Contact</p>
+                            <p class="flex items-center gap-2 text-gray-400 font-medium"><i data-lucide="user" class="w-3 h-3 text-red-500"></i> CO-LEAD: Add Contact</p>
+                        </div>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl border-l-4 border-l-red-600 reveal stagger-1">
+                        <h4 class="font-bold text-sm md:text-lg mb-3 tracking-tight">Play-Slay</h4>
+                        <div class="space-y-2 text-[11px] md:text-sm">
+                            <p class="flex items-center gap-2 text-gray-400 font-medium"><i data-lucide="user" class="w-3 h-3 text-red-500"></i> LEAD: Add Contact</p>
+                            <p class="flex items-center gap-2 text-gray-400 font-medium"><i data-lucide="user" class="w-3 h-3 text-red-500"></i> CO-LEAD: Add Contact</p>
+                        </div>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl border-l-4 border-l-red-600 reveal stagger-2">
+                        <h4 class="font-bold text-sm md:text-lg mb-3 tracking-tight">Connect-4</h4>
+                        <div class="space-y-2 text-[11px] md:text-sm">
+                            <p class="flex items-center gap-2 text-gray-400 font-medium"><i data-lucide="user" class="w-3 h-3 text-red-500"></i> LEAD: Add Contact</p>
+                            <p class="flex items-center gap-2 text-gray-400 font-medium"><i data-lucide="user" class="w-3 h-3 text-red-500"></i> CO-LEAD: Add Contact</p>
+                        </div>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl border-l-4 border-l-red-600 reveal stagger-3">
                         <h4 class="font-bold text-sm md:text-lg mb-3 tracking-tight">Content Creation</h4>
                         <div class="space-y-2 text-[11px] md:text-sm">
                             <p class="flex items-center gap-2 text-gray-400 font-medium"><i data-lucide="phone" class="w-3 h-3 text-red-500"></i> SARAVANAN: +91 89511 11403</p>
@@ -456,28 +432,6 @@
             </div>
             <p class="text-gray-600 text-[8px] md:text-[10px] uppercase tracking-widest leading-relaxed px-4 opacity-70">© 2024 Creative Conclave • Made with ❤️ by IDT core commitee</p>
         </footer>
-    </div>
-
-    <!-- MEMORY WALL VIEW -->
-    <div id="memory-wall-view" class="py-12 px-6">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
-                <button onclick="closeViews()" class="flex items-center gap-3 text-gray-400 hover:text-white transition-all text-[10px] md:text-sm uppercase tracking-widest font-bold group">
-                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i> Back to Home
-                </button>
-                <div class="text-center">
-                    <h2 class="text-3xl md:text-6xl font-sync font-bold uppercase tracking-tight">Memory <span class="text-red-600 neon-glow">Wall</span></h2>
-                    <p class="text-gray-500 text-xs md:text-sm uppercase tracking-widest mt-2">Shared moments from the symposium</p>
-                </div>
-                <div>
-                    <label for="memory-upload" class="btn-primary text-white px-6 py-3 rounded-full text-xs md:text-sm font-bold uppercase tracking-widest cursor-pointer flex items-center gap-2">
-                        <i data-lucide="upload" class="w-4 h-4"></i> Upload Memory
-                    </label>
-                    <input type="file" id="memory-upload" class="hidden" accept="image/*" onchange="handleWallUpload(event)">
-                </div>
-            </div>
-            <div id="wall-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6"></div>
-        </div>
     </div>
 
     <!-- EVENT DETAILS VIEW -->
@@ -506,126 +460,43 @@
                         <div id="details-contacts" class="grid sm:grid-cols-2 gap-4"></div>
                     </div>
 
-                    <div class="flex gap-4 items-center">
+                    <div class="grid grid-cols-2 gap-4">
                         <div class="glass-card px-6 py-4 rounded-2xl text-center border-white/5">
                             <p class="text-[9px] text-gray-500 uppercase tracking-widest mb-1">Time Frame</p>
                             <p id="details-time" class="font-bold text-xs md:text-sm text-white"></p>
+                        </div>
+                        <div class="glass-card px-6 py-4 rounded-2xl text-center border-white/5">
+                            <p class="text-[9px] text-gray-500 uppercase tracking-widest mb-1">Venue</p>
+                            <p id="details-venue" class="font-bold text-xs md:text-sm text-white"></p>
                         </div>
                     </div>
                 </div>
                 <div class="md:col-span-2">
                     <div class="glass-card p-8 md:p-10 rounded-3xl sticky top-10 text-center border-red-500/10 bg-white/[0.02]">
                         <h3 class="text-lg md:text-2xl font-bold mb-4 tracking-tight uppercase text-white">Register Now</h3>
+                        <p class="text-xs md:text-sm text-gray-500 mb-8 leading-relaxed">Secure your slot via the official portal.</p>
                         <div class="bg-black/40 rounded-2xl p-8 border border-dashed border-white/10 mb-8 flex flex-col items-center">
                             <i data-lucide="clipboard-check" class="w-8 h-8 text-red-500 mb-4"></i>
                             <a id="register-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSf9xd8WVz2lFk1R2R1j6uP5AMZ8FxGW3lRI7FvwPYEnePTkRA/viewform?usp=dialog" target="_blank" class="block w-full btn-primary text-white py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] md:text-sm shadow-xl shadow-red-600/10">Open Form</a>
                         </div>
+                        <p class="text-[8px] md:text-[10px] text-gray-600 uppercase tracking-widest">Digital certificates will be emailed to participants</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- FIREBASE & LOGIC -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        const firebaseConfig = JSON.parse(__firebase_config);
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'creative-conclave-idt';
-
-        let user = null;
-        let memories = [];
-
-        // Corrected Auth initialization
-        const initAuth = async () => {
-            try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
-            } catch (err) {
-                console.error("Auth error:", err);
-            }
-        };
-
-        // Listen for user, THEN attach firestore listeners
-        onAuthStateChanged(auth, (u) => {
-            user = u;
-            if (user) {
-                const memoriesRef = collection(db, 'artifacts', appId, 'public', 'data', 'memories');
-                onSnapshot(memoriesRef, (snapshot) => {
-                    memories = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                    memories.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
-                    renderMemories();
-                }, (error) => {
-                    console.error("Firestore Listener Error:", error);
-                });
-            }
-        });
-
-        window.openMemoryWall = () => {
-            document.body.classList.add('wall-active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            renderMemories();
-        };
-
-        window.handleWallUpload = async (event) => {
-            const file = event.target.files[0];
-            if (file && user) {
-                const reader = new FileReader();
-                reader.onload = async (e) => {
-                    const base64 = e.target.result;
-                    try {
-                        const memoriesRef = collection(db, 'artifacts', appId, 'public', 'data', 'memories');
-                        await addDoc(memoriesRef, {
-                            image: base64,
-                            timestamp: Date.now()
-                        });
-                    } catch (err) {
-                        console.error("Upload error:", err);
-                    }
-                };
-                reader.readAsDataURL(file);
-            }
-        };
-
-        function renderMemories() {
-            const grid = document.getElementById('wall-grid');
-            if (!grid) return;
-            grid.innerHTML = '';
-            memories.forEach(mem => {
-                const slot = document.createElement('div');
-                slot.className = 'memory-slot polaroid-frame reveal active';
-                slot.innerHTML = `<img src="${mem.image}" alt="Memory" loading="lazy">`;
-                grid.appendChild(slot);
-            });
-            const remaining = Math.max(0, 50 - memories.length);
-            for (let i = 0; i < remaining; i++) {
-                const slot = document.createElement('div');
-                slot.className = 'memory-slot polaroid-frame reveal active';
-                slot.innerHTML = `<i data-lucide="image" class="w-6 h-6 text-white/10"></i>`;
-                grid.appendChild(slot);
-            }
-            lucide.createIcons();
-        }
-
-        window.closeViews = () => {
-            document.body.classList.remove('view-active', 'wall-active');
-        };
-
-        // UI Logic
+    <script>
         lucide.createIcons();
+
+        // Reveal logic
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('active'); });
-        }, { threshold: 0.1 });
+        }, observerOptions);
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+        // Timer
         const targetDate = new Date(); targetDate.setDate(targetDate.getDate() + 15);
         setInterval(() => {
             const diff = targetDate - new Date();
@@ -636,13 +507,69 @@
             }
         }, 1000);
 
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if(window.scrollY > 20) nav.classList.add('bg-black/80', 'backdrop-blur-xl', 'py-3', 'border-b', 'border-white/5');
+            else nav.classList.remove('bg-black/80', 'backdrop-blur-xl', 'py-3', 'border-b', 'border-white/5');
+        });
+
+        // Event Data with Contacts & Venues
         const eventsData = {
-            'innovation-trail': { title: 'Innovation Trail', tagline: 'The ultimate logical hunt', time: '9:00 AM – 12:00 PM', icon: 'map', contacts: [{ name: 'RISHI', phone: '+91 98869 81655' }, { name: 'HASINI', phone: '+91 94815 72962' }], rules: ['Teams of 3-4.', 'Phones for decoding.', 'Clear 4 paths in sequence.', 'Checkpoints require verification.'] },
-            'pitch-deck': { title: 'Pitch Deck', tagline: 'Sell your vision', time: '9:00 AM – 12:00 PM', icon: 'presentation', contacts: [{ name: 'SHREYA', phone: '+91 82965 47424' }, { name: 'VIGNESH', phone: '+91 96112 77448' }], rules: ['Indiv/team (max 3).', '.pdf/.pptx required.', '5 min pitch + 3 min Q&A.', 'Submit 1h prior.'] },
-            'makeathon': { title: 'Makeathon', tagline: 'Rapid Prototyping', time: '1:00 PM – 3:30 PM', icon: 'hammer', contacts: [{ name: 'Lead', phone: 'Add Contact' }], rules: ['Starts 1:00 PM.', 'Teams of 2-4.', 'Hardware/Software allowed.', 'Evaluating UI/UX.'] },
-            'play-slay': { title: 'Play-Slay', tagline: 'Esports Dominance', time: '1:00 PM – 3:30 PM', icon: 'gamepad-2', contacts: [{ name: 'Lead', phone: 'Add Contact' }], rules: ['Knockout bracket.', 'Peripherals allowed.', 'No toxic behavior.', 'Fair play mandatory.'] },
-            'connect-4': { title: 'Connect-4', tagline: 'Logical Visualization', time: '1:30 PM – 3:30 PM', icon: 'grid-3x3', contacts: [{ name: 'Lead', phone: 'Add Contact' }], rules: ['Individual event.', 'Map data dots.', 'Materials provided.', '60 minute limit.'] },
-            'content-creation': { title: 'Content Creation', tagline: 'The Storyteller', time: '1:30 PM – 3:30 PM', icon: 'clapperboard', contacts: [{ name: 'SARAVANAN', phone: '+91 89511 11403' }, { name: 'SHRUJAN', phone: '+91 96860 71191' }], rules: ['Max 60 sec reel.', 'Live footage only.', 'No stock/AI footage.', 'Submit by 3:30 PM.'] }
+            'innovation-trail': { 
+                title: 'Innovation Trail', 
+                tagline: 'The ultimate logical hunt', 
+                time: '9:00 AM – 12:00 PM', 
+                venue: 'Main Campus Grounds',
+                icon: 'map', 
+                contacts: [{ name: 'RISHI', phone: '+91 98869 81655' }, { name: 'HASINI', phone: '+91 94815 72962' }], 
+                rules: ['Teams of 3-4.', 'Phones strictly for decoding.', 'Clear 4 paths in sequence.', 'Volunteer verification required.'] 
+            },
+            'pitch-deck': { 
+                title: 'Pitch Deck', 
+                tagline: 'Sell your vision', 
+                time: '9:00 AM – 12:00 PM', 
+                venue: 'Auditorium - Block A',
+                icon: 'presentation', 
+                contacts: [{ name: 'SHREYA', phone: '+91 82965 47424' }, { name: 'VIGNESH', phone: '+91 96112 77448' }], 
+                rules: ['Individual/team (max 3).', '.pdf or .pptx required.', '5 min pitch + 3 min Q&A.', 'Judging: Scalability & Impact.'] 
+            },
+            'makeathon': { 
+                title: 'Makeathon', 
+                tagline: 'Search. Scale. Solve', 
+                time: '1:00 PM – 3:30 PM', 
+                venue: 'Design Lab - 2nd Floor',
+                icon: 'hammer', 
+                contacts: [{ name: 'LEAD', phone: 'Check Venue' }, { name: 'CO-LEAD', phone: 'Check Venue' }], 
+                rules: ['Starts sharp at 1:00 PM.', 'Teams of 2-4.', 'Original projects only.', 'Functional prototypes required.'] 
+            },
+            'play-slay': { 
+                title: 'Play-Slay', 
+                tagline: 'Esports Dominance', 
+                time: '1:00 PM – 3:30 PM', 
+                venue: 'Esports Hub - Block C',
+                icon: 'gamepad-2', 
+                contacts: [{ name: 'LEAD', phone: 'Check Venue' }, { name: 'CO-LEAD', phone: 'Check Venue' }], 
+                rules: ['Single Elimination bracket.', 'Strict fair play policy.', 'Director decision final.', 'No scripts/hacks.'] 
+            },
+            'connect-4': { 
+                title: 'Connect-4', 
+                tagline: 'Logical Visualization', 
+                time: '1:30 PM – 3:30 PM', 
+                venue: 'Central Courtyard',
+                icon: 'grid-3x3', 
+                contacts: [{ name: 'LEAD', phone: 'Check Venue' }, { name: 'CO-LEAD', phone: 'Check Venue' }], 
+                rules: ['Individual event.', 'Map data dots accurately.', '60 minute time limit.', 'Materials provided.'] 
+            },
+            'content-creation': { 
+                title: 'Content Creation', 
+                tagline: 'The Storyteller', 
+                time: '1:30 PM – 3:30 PM', 
+                venue: 'Media Studio - Block B',
+                icon: 'clapperboard', 
+                contacts: [{ name: 'SARAVANAN', phone: '+91 89511 11403' }, { name: 'SHRUJAN', phone: '+91 96860 71191' }], 
+                rules: ['Max 60 sec cinematic reel.', 'Live footage only.', 'No stock footage.', 'Submit by 3:30 PM.'] 
+            }
         };
 
         window.showEventDetails = (id) => {
@@ -650,15 +577,23 @@
             document.getElementById('details-title').innerText = data.title;
             document.getElementById('details-tagline').innerText = data.tagline;
             document.getElementById('details-time').innerText = data.time;
+            document.getElementById('details-venue').innerText = data.venue;
             document.getElementById('event-icon').innerHTML = `<i data-lucide="${data.icon}" class="w-16 h-16"></i>`;
             document.getElementById('details-rules').innerHTML = data.rules.map(r => `<li class="flex items-start gap-3"><span class="text-red-500 mt-1">•</span><span>${r}</span></li>`).join('');
-            document.getElementById('details-contacts').innerHTML = data.contacts.map(c => `<div class="p-3 border border-white/5 rounded-xl bg-white/[0.01]"><p class="text-[10px] text-gray-500 uppercase tracking-widest mb-1">${c.name}</p><p class="text-xs md:text-sm font-bold text-white">${c.phone}</p></div>`).join('');
+            document.getElementById('details-contacts').innerHTML = data.contacts.map(c => `
+                <div class="p-3 border border-white/5 rounded-xl bg-white/[0.01]">
+                    <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-1">${c.name}</p>
+                    <p class="text-xs md:text-sm font-bold text-white">${c.phone}</p>
+                </div>
+            `).join('');
             document.body.classList.add('view-active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
             lucide.createIcons();
         };
 
-        initAuth();
+        window.closeViews = () => {
+            document.body.classList.remove('view-active');
+        };
     </script>
 </body>
 </html>
