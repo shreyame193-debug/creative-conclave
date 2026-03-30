@@ -11,9 +11,9 @@
 
         :root {
             --neon-red: #ff3131;
-            --dark-bg: #050505;
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --dark-bg: #030303;
+            --glass: rgba(255, 255, 255, 0.02);
+            --glass-border: rgba(255, 255, 255, 0.08);
         }
 
         body {
@@ -21,6 +21,7 @@
             color: #ffffff;
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
+            position: relative;
         }
 
         .font-sync { font-family: 'Syncopate', sans-serif; }
@@ -29,10 +30,40 @@
             text-shadow: 0 0 10px rgba(255, 49, 49, 0.8), 0 0 20px rgba(255, 49, 49, 0.4);
         }
 
+        .bg-mesh {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-color: var(--dark-bg);
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                radial-gradient(circle at 10% 10%, rgba(255, 49, 49, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(255, 49, 49, 0.06) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(20, 0, 0, 1) 0%, transparent 100%);
+            background-size: 50px 50px, 50px 50px, 100% 100%, 100% 100%, 100% 100%;
+        }
+
+        .bg-glow-aura {
+            position: fixed;
+            top: -20%;
+            left: -20%;
+            width: 140%;
+            height: 140%;
+            z-index: -2;
+            background: radial-gradient(circle at center, rgba(255, 49, 49, 0.02) 0%, transparent 60%);
+            animation: aura-move 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes aura-move {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-3%, -3%) scale(1.05); }
+        }
+
         .glass-card {
             background: var(--glass);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--glass-border);
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -43,14 +74,6 @@
             box-shadow: 0 10px 30px rgba(255, 49, 49, 0.1);
         }
 
-        .bg-mesh {
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(255, 49, 49, 0.12) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(255, 49, 49, 0.08) 0px, transparent 50%);
-            background-attachment: fixed;
-        }
-
-        /* Enhanced Reveal Animations */
         .reveal {
             opacity: 0;
             transform: translateY(30px);
@@ -66,19 +89,31 @@
         .stagger-2 { transition-delay: 0.2s; }
         .stagger-3 { transition-delay: 0.3s; }
 
-        /* Floating Animation */
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(2deg); }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
         }
-        .animate-float { animation: float 6s ease-in-out infinite; }
 
-        /* Neon Pulse */
-        @keyframes pulse-neon {
-            0%, 100% { opacity: 1; text-shadow: 0 0 10px var(--neon-red); }
-            50% { opacity: 0.8; text-shadow: 0 0 20px var(--neon-red), 0 0 30px var(--neon-red); }
+        .animate-marquee {
+            display: flex;
+            width: max-content;
+            animation: marquee 40s linear infinite;
         }
-        .neon-pulse { animation: pulse-neon 2s infinite; }
+
+        @keyframes pulse-dot {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--neon-red);
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse-dot 2s infinite;
+            box-shadow: 0 0 10px var(--neon-red);
+        }
 
         .btn-primary {
             background: var(--neon-red);
@@ -87,23 +122,11 @@
             overflow: hidden;
         }
 
-        .btn-primary::after {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: 0.5s;
-        }
-
-        .btn-primary:hover::after { left: 100%; }
-
         .btn-primary:hover {
             box-shadow: 0 0 25px var(--neon-red);
             transform: scale(1.05);
         }
 
-        /* Smooth Detail View Transition */
         #event-details-view {
             display: none;
             position: fixed;
@@ -120,8 +143,7 @@
         .view-active #main-content { 
             opacity: 0;
             pointer-events: none;
-            transform: scale(0.95);
-            transition: 0.5s;
+            transform: scale(0.98);
         }
         
         .view-active #event-details-view { 
@@ -129,29 +151,14 @@
             opacity: 1;
             transform: scale(1);
         }
-
-        .nav-link {
-            position: relative;
-            white-space: nowrap;
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -4px; left: 0;
-            width: 0; height: 1px;
-            background: var(--neon-red);
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover::after { width: 100%; }
     </style>
 </head>
-<body class="bg-mesh">
+<body>
+    <div class="bg-mesh"></div>
+    <div class="bg-glow-aura"></div>
 
     <!-- MAIN PAGE CONTENT -->
     <div id="main-content" class="transition-all duration-500">
-        <!-- NAVBAR -->
         <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300 py-4 px-4 md:px-12">
             <div class="max-w-7xl mx-auto flex justify-between items-center gap-4">
                 <div class="flex items-center gap-2 flex-shrink-0">
@@ -173,18 +180,25 @@
         </nav>
 
         <!-- HERO SECTION -->
-        <section id="home" class="min-h-screen flex flex-col items-center justify-center pt-20 px-6 relative text-center">
-            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-red-600/10 rounded-full blur-[100px] animate-float"></div>
-            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-red-600/5 rounded-full blur-[120px] animate-float" style="animation-delay: -3s;"></div>
-
+        <section id="home" class="min-h-screen flex flex-col items-center justify-center pt-24 px-6 relative text-center overflow-hidden">
             <div class="z-10">
                 <p class="text-red-500 font-sync tracking-[0.2em] md:tracking-[0.4em] mb-4 text-[9px] md:text-sm reveal active">PRESENTED BY IDT CLUB</p>
-                <h1 class="text-4xl sm:text-5xl md:text-9xl font-sync font-bold mb-6 tracking-tighter reveal active stagger-1 leading-tight">
-                    CREATIVE<br><span class="neon-glow text-red-600 neon-pulse">CONCLAVE</span>
+                <h1 class="text-4xl sm:text-6xl md:text-9xl font-sync font-bold mb-6 tracking-tighter reveal active stagger-1 leading-tight">
+                    CREATIVE<br><span class="neon-glow text-red-600">CONCLAVE</span>
                 </h1>
+                
+                <!-- CREATIVE FEATURE: LIVE REGISTRATION COUNTER -->
+                <div class="reveal active stagger-2 mb-8 inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
+                    <span class="live-dot"></span>
+                    <p class="text-[10px] md:text-xs font-bold tracking-widest uppercase text-gray-300">
+                        Join <span id="reg-count" class="text-white text-sm md:text-base">487</span> Innovators Registered
+                    </p>
+                </div>
+
                 <p class="text-gray-400 text-sm md:text-xl max-w-2xl mx-auto mb-10 font-light reveal active stagger-2 px-4 leading-relaxed">
-                    A multidisciplinary symposium for <span class="text-white font-semibold">Innovation & Design</span>.
+                    A multidisciplinary symposium driving the convergence of <span class="text-white font-semibold">Innovation & Design</span>.
                 </p>
+                
                 <div class="flex flex-col sm:flex-row gap-4 justify-center reveal active stagger-3">
                     <a href="https://docs.google.com/forms/d/e/1FAIpQLSf9xd8WVz2lFk1R2R1j6uP5AMZ8FxGW3lRI7FvwPYEnePTkRA/viewform?usp=dialog" target="_blank" class="px-8 py-3 md:px-10 md:py-4 bg-red-600 text-white font-bold rounded-full hover:bg-white hover:text-black transition-all uppercase tracking-widest text-[10px] md:text-sm shadow-lg shadow-red-600/20">Register Now</a>
                     <a href="#events" class="px-8 py-3 md:px-10 md:py-4 bg-white text-black font-bold rounded-full hover:bg-red-600 hover:text-white transition-all uppercase tracking-widest text-[10px] md:text-sm">Explore Events</a>
@@ -200,8 +214,35 @@
             </div>
         </section>
 
+        <!-- CREATIVE FEATURE: QUOTES MARQUEE -->
+        <div class="py-12 bg-white/[0.02] border-y border-white/5 overflow-hidden">
+            <div class="animate-marquee">
+                <!-- Duplicate quotes for seamless loop -->
+                <div class="flex items-center gap-12 px-6">
+                    <span class="text-red-500 font-sync text-[10px] md:text-xs uppercase tracking-widest whitespace-nowrap">"Design is how it works" — Steve Jobs</span>
+                    <span class="w-2 h-2 bg-white/20 rounded-full"></span>
+                    <span class="text-gray-400 font-light italic text-[10px] md:text-xs whitespace-nowrap">"Innovation distinguishes between a leader and a follower"</span>
+                    <span class="w-2 h-2 bg-white/20 rounded-full"></span>
+                    <span class="text-red-500 font-sync text-[10px] md:text-xs uppercase tracking-widest whitespace-nowrap">"The best way to predict the future is to create it"</span>
+                    <span class="w-2 h-2 bg-white/20 rounded-full"></span>
+                    <span class="text-gray-400 font-light italic text-[10px] md:text-xs whitespace-nowrap">"Design is intelligence made visible" — Alina Wheeler</span>
+                    <span class="w-2 h-2 bg-white/20 rounded-full"></span>
+                </div>
+                <div class="flex items-center gap-12 px-6">
+                    <span class="text-red-500 font-sync text-[10px] md:text-xs uppercase tracking-widest whitespace-nowrap">"Design is how it works" — Steve Jobs</span>
+                    <span class="w-2 h-2 bg-white/20 rounded-full"></span>
+                    <span class="text-gray-400 font-light italic text-[10px] md:text-xs whitespace-nowrap">"Innovation distinguishes between a leader and a follower"</span>
+                    <span class="w-2 h-2 bg-white/20 rounded-full"></span>
+                    <span class="text-red-500 font-sync text-[10px] md:text-xs uppercase tracking-widest whitespace-nowrap">"The best way to predict the future is to create it"</span>
+                    <span class="w-2 h-2 bg-white/20 rounded-full"></span>
+                    <span class="text-gray-400 font-light italic text-[10px] md:text-xs whitespace-nowrap">"Design is intelligence made visible" — Alina Wheeler</span>
+                    <span class="w-2 h-2 bg-white/20 rounded-full"></span>
+                </div>
+            </div>
+        </div>
+
         <!-- EVENTS SECTION -->
-        <section id="events" class="py-20 md:py-32 px-6 bg-black/50">
+        <section id="events" class="py-20 md:py-32 px-6 bg-black/40">
             <div class="max-w-7xl mx-auto">
                 <div class="text-center mb-16 reveal">
                     <h2 class="text-2xl md:text-4xl font-sync font-bold mb-4 uppercase tracking-tight">Core <span class="text-red-600">Events</span></h2>
@@ -395,7 +436,7 @@
     </div>
 
     <!-- EVENT DETAILS VIEW -->
-    <div id="event-details-view" class="bg-mesh">
+    <div id="event-details-view">
         <div class="max-w-5xl mx-auto py-12 px-6">
             <button onclick="closeEventDetails()" class="flex items-center gap-3 text-gray-400 hover:text-white mb-10 transition-all text-[10px] md:text-sm uppercase tracking-widest font-bold group">
                 <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i> Back to Home
@@ -405,12 +446,21 @@
                     <div id="event-icon" class="text-red-500 mb-6 neon-pulse"></div>
                     <h1 id="details-title" class="text-3xl md:text-6xl font-sync font-bold mb-3 uppercase tracking-tight leading-tight"></h1>
                     <p id="details-tagline" class="text-red-500 font-sync text-[10px] md:text-sm mb-10 italic tracking-widest opacity-90"></p>
+                    
                     <div class="glass-card p-6 md:p-10 rounded-3xl mb-10 border-white/5">
                         <h3 class="text-base md:text-xl font-bold mb-8 border-b border-white/10 pb-4 tracking-tight uppercase flex items-center gap-3">
                             <i data-lucide="scroll" class="w-5 h-5 text-red-500"></i> General Rules
                         </h3>
                         <ul id="details-rules" class="space-y-4 text-gray-400 text-[11px] md:text-base list-none leading-relaxed"></ul>
                     </div>
+
+                    <div class="glass-card p-6 md:p-8 rounded-3xl mb-10 border-white/5">
+                        <h3 class="text-base md:text-lg font-bold mb-6 tracking-tight uppercase flex items-center gap-3">
+                            <i data-lucide="users" class="w-5 h-5 text-red-500"></i> Event Coordinators
+                        </h3>
+                        <div id="details-contacts" class="grid sm:grid-cols-2 gap-4"></div>
+                    </div>
+
                     <div class="flex gap-4 items-center">
                         <div class="glass-card px-6 py-4 rounded-2xl text-center border-white/5">
                             <p class="text-[9px] text-gray-500 uppercase tracking-widest mb-1">Time Frame</p>
@@ -438,11 +488,21 @@
     <script>
         lucide.createIcons();
 
+        // Reveal logic
         const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('active'); });
         }, observerOptions);
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Animated Registration Counter
+        let count = 487;
+        const regCountEl = document.getElementById('reg-count');
+        const interval = setInterval(() => {
+            count += Math.floor(Math.random() * 2);
+            regCountEl.innerText = count;
+            if (count > 540) clearInterval(interval);
+        }, 3000);
 
         const formLink = 'https://docs.google.com/forms/d/e/1FAIpQLSf9xd8WVz2lFk1R2R1j6uP5AMZ8FxGW3lRI7FvwPYEnePTkRA/viewform?usp=dialog';
 
@@ -452,6 +512,10 @@
                 tagline: 'The ultimate logical hunt', 
                 time: '9:00 AM – 12:00 PM', 
                 icon: 'map', 
+                contacts: [
+                    { name: 'RISHI', phone: '+91 98869 81655' },
+                    { name: 'HASINI', phone: '+91 94815 72962' }
+                ],
                 rules: [
                     'Teams must consist of 3-4 members.', 
                     'Mobile phones are strictly permitted for scanning and decoding purposes only.', 
@@ -466,6 +530,10 @@
                 tagline: 'Sell your vision', 
                 time: '9:00 AM – 12:00 PM', 
                 icon: 'presentation', 
+                contacts: [
+                    { name: 'SHREYA', phone: '+91 82965 47424' },
+                    { name: 'VIGNESH', phone: '+91 96112 77448' }
+                ],
                 rules: [
                     'Individual or team participation (max 3 members).', 
                     'Presentation file must be in .pdf or .pptx format.', 
@@ -480,6 +548,10 @@
                 tagline: 'Rapid Prototyping', 
                 time: '1:00 PM – 3:30 PM', 
                 icon: 'hammer', 
+                contacts: [
+                    { name: 'Lead', phone: 'Add Contact' },
+                    { name: 'Co-Lead', phone: 'Add Contact' }
+                ],
                 rules: [
                     'Problem statements will be released exactly at 1:00 PM.', 
                     'Teams of 2-4 members are required.', 
@@ -494,6 +566,10 @@
                 tagline: 'Esports Dominance', 
                 time: '1:00 PM – 3:30 PM', 
                 icon: 'gamepad-2', 
+                contacts: [
+                    { name: 'Lead', phone: 'Add Contact' },
+                    { name: 'Co-Lead', phone: 'Add Contact' }
+                ],
                 rules: [
                     'The tournament follows a Single Elimination (Knockout) bracket.', 
                     'Personal peripherals (mice/headphones) are allowed if compatible with setup.', 
@@ -507,6 +583,10 @@
                 tagline: 'Logical Visualization', 
                 time: '1:30 PM – 3:30 PM', 
                 icon: 'grid-3x3', 
+                contacts: [
+                    { name: 'Lead', phone: 'Add Contact' },
+                    { name: 'Co-Lead', phone: 'Add Contact' }
+                ],
                 rules: [
                     'This is an individual participation event.', 
                     'Participants must map interconnected data chains into a logical network.', 
@@ -521,6 +601,10 @@
                 tagline: 'The Storyteller', 
                 time: '1:30 PM – 3:30 PM', 
                 icon: 'clapperboard', 
+                contacts: [
+                    { name: 'SARAVANAN', phone: '+91 89511 11403' },
+                    { name: 'SHRUJAN', phone: '+91 96860 71191' }
+                ],
                 rules: [
                     'Produce a cinematic reel of the event (max duration: 60 seconds).', 
                     '100% of the footage used must be captured live at the venue today.', 
@@ -539,6 +623,13 @@
             document.getElementById('details-time').innerText = data.time;
             document.getElementById('event-icon').innerHTML = `<i data-lucide="${data.icon}" class="w-16 h-16"></i>`;
             document.getElementById('details-rules').innerHTML = data.rules.map(r => `<li class="flex items-start gap-3"><span class="text-red-500 mt-1">•</span><span>${r}</span></li>`).join('');
+            document.getElementById('details-contacts').innerHTML = data.contacts.map(c => `
+                <div class="p-3 border border-white/5 rounded-xl bg-white/[0.01]">
+                    <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-1">${c.name}</p>
+                    <p class="text-xs md:text-sm font-bold text-white">${c.phone}</p>
+                </div>
+            `).join('');
+
             document.body.classList.add('view-active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
             lucide.createIcons();
@@ -561,11 +652,10 @@
             const nav = document.getElementById('navbar');
             if(window.scrollY > 20) {
                 nav.classList.add('bg-black/80', 'backdrop-blur-xl', 'py-3', 'border-b', 'border-white/5');
-                nav.classList.remove('py-4');
             } else {
                 nav.classList.remove('bg-black/80', 'backdrop-blur-xl', 'py-3', 'border-b', 'border-white/5');
-                nav.classList.add('py-4');
             }
         });
     </script>
 </body>
+</html>
