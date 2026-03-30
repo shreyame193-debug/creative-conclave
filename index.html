@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creative Conclave | IDT Club</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Syncopate:wght@400;700&display=swap');
+
+        :root {
+            --neon-red: #ff3131;
+            --dark-bg: #050505;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .font-sync { font-family: 'Syncopate', sans-serif; }
+
+        .neon-glow {
+            text-shadow: 0 0 10px rgba(255, 49, 49, 0.8), 0 0 20px rgba(255, 49, 49, 0.4);
+        }
+
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .glass-card:hover {
+            border-color: var(--neon-red);
+            transform: translateY(-4px);
+        }
+
+        .bg-mesh {
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(255, 49, 49, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(255, 49, 49, 0.1) 0px, transparent 50%);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .btn-primary {
+            background: var(--neon-red);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 0 20px var(--neon-red);
+            transform: scale(1.02);
+        }
+
+        #event-details-view {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            background: var(--dark-bg);
+            overflow-y: auto;
+        }
+
+        .view-active #main-content { display: none; }
+        .view-active #event-details-view { display: block; }
+    </style>
+</head>
+<body class="bg-mesh">
+
+    <!-- MAIN PAGE CONTENT -->
+    <div id="main-content">
+        <!-- NAVBAR -->
+        <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300 py-4 px-6 md:px-12">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <div class="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center font-bold text-xl">C</div>
+                    <span class="font-sync font-bold text-lg hidden sm:inline tracking-tighter">CREATIVE CONCLAVE</span>
+                </div>
+                <div class="hidden md:flex items-center gap-8 text-sm font-medium uppercase tracking-widest text-gray-300">
+                    <a href="#home" class="hover:text-red-500 transition-colors">Home</a>
+                    <a href="#events" class="hover:text-red-500 transition-colors">Events</a>
+                    <a href="#schedule" class="hover:text-red-500 transition-colors">Schedule</a>
+                    <a href="#contact" class="hover:text-red-500 transition-colors">Contact</a>
+                </div>
+                <!-- DIRECT LINK TO FORM -->
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSf9xd8WVz2lFk1R2R1j6uP5AMZ8FxGW3lRI7FvwPYEnePTkRA/viewform?usp=dialog" target="_blank" class="btn-primary text-white px-6 py-2 rounded-full text-sm font-bold uppercase tracking-widest">Register</a>
+            </div>
+        </nav>
+
+        <!-- HERO SECTION -->
+        <section id="home" class="min-h-screen flex flex-col items-center justify-center pt-20 px-6 relative">
+            <div class="text-center z-10">
+                <p class="text-red-500 font-sync tracking-[0.3em] mb-4 text-sm reveal">PRESENTED BY IDT CLUB</p>
+                <h1 class="text-6xl md:text-8xl font-sync font-bold mb-6 tracking-tighter reveal">
+                    CREATIVE<br><span class="neon-glow text-red-600">CONCLAVE</span>
+                </h1>
+                <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-light reveal">
+                    A multidisciplinary symposium for <span class="text-white font-semibold">Innovation & Design</span>.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center reveal">
+                    <!-- DIRECT LINK TO FORM -->
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSf9xd8WVz2lFk1R2R1j6uP5AMZ8FxGW3lRI7FvwPYEnePTkRA/viewform?usp=dialog" target="_blank" class="px-10 py-4 bg-red-600 text-white font-bold rounded-full hover:bg-white hover:text-black transition-all uppercase tracking-widest text-sm">Register Now</a>
+                    <a href="#events" class="px-10 py-4 bg-white text-black font-bold rounded-full hover:bg-red-600 hover:text-white transition-all uppercase tracking-widest text-sm">Explore Events</a>
+                </div>
+                
+                <div class="mt-12 flex gap-4 items-center justify-center reveal">
+                    <div class="flex gap-4 items-center px-6 py-3 glass-card rounded-2xl">
+                        <div class="text-center"><span id="days" class="block text-2xl font-bold">00</span><span class="text-[10px] opacity-50 uppercase">Days</span></div>
+                        <div class="text-center"><span id="hours" class="block text-2xl font-bold">00</span><span class="text-[10px] opacity-50 uppercase">Hrs</span></div>
+                        <div class="text-center"><span id="minutes" class="block text-2xl font-bold">00</span><span class="text-[10px] opacity-50 uppercase">Min</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EVENTS SECTION -->
+        <section id="events" class="py-24 px-6 bg-black/50">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-4xl font-sync font-bold mb-4 uppercase tracking-tight">Core <span class="text-red-600">Events</span></h2>
+                    <p class="text-gray-500">Click any card to view rules and register</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Event Cards (These open rules page as requested earlier) -->
+                    <div onclick="showEventDetails('innovation-trail')" class="glass-card p-8 rounded-3xl cursor-pointer reveal">
+                        <div class="text-red-500 mb-6"><i data-lucide="map" class="w-10 h-10"></i></div>
+                        <h3 class="text-2xl font-bold mb-2">Innovation Trail</h3>
+                        <p class="text-red-500 text-xs font-sync mb-4 italic">"4-path logical treasure hunt"</p>
+                        <p class="text-gray-400 text-sm mb-6">Decrypt clues across campus in this high-stakes race.</p>
+                        <div class="flex justify-between items-center text-xs text-gray-500 uppercase">
+                            <span>9:00 AM – 12:00 PM</span>
+                            <span class="text-red-500 font-bold">View Rules →</span>
+                        </div>
+                    </div>
+
+                    <div onclick="showEventDetails('pitch-deck')" class="glass-card p-8 rounded-3xl cursor-pointer reveal" style="transition-delay: 0.1s">
+                        <div class="text-red-500 mb-6"><i data-lucide="presentation" class="w-10 h-10"></i></div>
+                        <h3 class="text-2xl font-bold mb-2">Pitch Deck</h3>
+                        <p class="text-red-500 text-xs font-sync mb-4 italic">"Present your ideas"</p>
+                        <p class="text-gray-400 text-sm mb-6">Got the next big idea? Present it to our panel of experts.</p>
+                        <div class="flex justify-between items-center text-xs text-gray-500 uppercase">
+                            <span>9:00 AM – 12:00 PM</span>
+                            <span class="text-red-500 font-bold">View Rules →</span>
+                        </div>
+                    </div>
+
+                    <div onclick="showEventDetails('makeathon')" class="glass-card p-8 rounded-3xl cursor-pointer reveal" style="transition-delay: 0.2s">
+                        <div class="text-red-500 mb-6"><i data-lucide="hammer" class="w-10 h-10"></i></div>
+                        <h3 class="text-2xl font-bold mb-2">Makeathon</h3>
+                        <p class="text-red-500 text-xs font-sync mb-4 italic">"Search. Scale. Solve"</p>
+                        <p class="text-gray-400 text-sm mb-6">Build a scalable solution for a real-world problem statement.</p>
+                        <div class="flex justify-between items-center text-xs text-gray-500 uppercase">
+                            <span>1:00 PM – 3:30 PM</span>
+                            <span class="text-red-500 font-bold">View Rules →</span>
+                        </div>
+                    </div>
+
+                    <div onclick="showEventDetails('play-slay')" class="glass-card p-8 rounded-3xl cursor-pointer reveal" style="transition-delay: 0.3s">
+                        <div class="text-red-500 mb-6"><i data-lucide="gamepad-2" class="w-10 h-10"></i></div>
+                        <h3 class="text-2xl font-bold mb-2">Play-Slay</h3>
+                        <p class="text-red-500 text-xs font-sync mb-4 italic">"Play your game"</p>
+                        <p class="text-gray-400 text-sm mb-6">The ultimate gaming arena. Strategy meets lightning skill.</p>
+                        <div class="flex justify-between items-center text-xs text-gray-500 uppercase">
+                            <span>1:00 PM – 3:30 PM</span>
+                            <span class="text-red-500 font-bold">View Rules →</span>
+                        </div>
+                    </div>
+
+                    <div onclick="showEventDetails('connect-4')" class="glass-card p-8 rounded-3xl cursor-pointer reveal" style="transition-delay: 0.4s">
+                        <div class="text-red-500 mb-6"><i data-lucide="grid-3x3" class="w-10 h-10"></i></div>
+                        <h3 class="text-2xl font-bold mb-2">Connect-4</h3>
+                        <p class="text-red-500 text-xs font-sync mb-4 italic">"Draw the logic"</p>
+                        <p class="text-gray-400 text-sm mb-6">Visualize complex networks and logic in a time-bound challenge.</p>
+                        <div class="flex justify-between items-center text-xs text-gray-500 uppercase">
+                            <span>1:30 PM – 3:30 PM</span>
+                            <span class="text-red-500 font-bold">View Rules →</span>
+                        </div>
+                    </div>
+
+                    <div onclick="showEventDetails('content-creation')" class="glass-card p-8 rounded-3xl cursor-pointer reveal" style="transition-delay: 0.5s">
+                        <div class="text-red-500 mb-6"><i data-lucide="clapperboard" class="w-10 h-10"></i></div>
+                        <h3 class="text-2xl font-bold mb-2">Content Creation</h3>
+                        <p class="text-red-500 text-xs font-sync mb-4 italic">"Find your inner director"</p>
+                        <p class="text-gray-400 text-sm mb-6">Capture the essence of the Conclave through your lens.</p>
+                        <div class="flex justify-between items-center text-xs text-gray-500 uppercase">
+                            <span>1:30 PM – 3:30 PM</span>
+                            <span class="text-red-500 font-bold">View Rules →</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCHEDULE -->
+        <section id="schedule" class="py-24 px-6">
+            <div class="max-w-4xl mx-auto text-center reveal">
+                <h2 class="text-4xl font-sync font-bold mb-12 uppercase tracking-tight">Event <span class="text-red-600">Schedule</span></h2>
+                <div class="space-y-6 text-left">
+                    <div class="p-6 glass-card rounded-2xl flex justify-between items-center">
+                        <div><p class="text-red-500 font-bold">9:00 AM - 12:00 PM</p><h4 class="font-bold">Innovation Trail & Pitch Deck</h4></div>
+                        <i data-lucide="sun"></i>
+                    </div>
+                    <div class="p-6 glass-card rounded-2xl flex justify-between items-center opacity-60">
+                        <div><p class="text-gray-400 font-bold">12:00 PM - 1:00 PM</p><h4 class="font-bold">Networking Lunch</h4></div>
+                        <i data-lucide="coffee"></i>
+                    </div>
+                    <div class="p-6 glass-card rounded-2xl flex justify-between items-center">
+                        <div><p class="text-red-500 font-bold">1:00 PM - 3:30 PM</p><h4 class="font-bold">Afternoon Parallel Events</h4></div>
+                        <i data-lucide="zap"></i>
+                    </div>
+                    <div class="p-6 glass-card rounded-2xl flex justify-between items-center border-red-500/50 border">
+                        <div><p class="text-red-500 font-bold">4:00 PM - 6:00 PM</p><h4 class="font-bold">Closing Jamming Session</h4></div>
+                        <i data-lucide="music"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT SECTION -->
+        <section id="contact" class="py-24 px-6 bg-black/30">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-4xl font-sync font-bold mb-4 uppercase tracking-tight">Event <span class="text-red-600">Leads</span></h2>
+                    <p class="text-gray-500">Reach out to respective coordinators for queries</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Innovation Trail -->
+                    <div class="glass-card p-6 rounded-2xl border-l-4 border-l-red-600 reveal">
+                        <h4 class="font-bold text-lg mb-3 tracking-tight">Innovation Trail</h4>
+                        <div class="space-y-2 text-sm">
+                            <p class="flex items-center gap-2 text-gray-400"><i data-lucide="phone" class="w-4 h-4 text-red-500"></i> RISHI: +91 98869 81655</p>
+                            <p class="flex items-center gap-2 text-gray-400"><i data-lucide="phone" class="w-4 h-4 text-red-500"></i> HASINI: +91 94815 72962</p>
+                        </div>
+                    </div>
+                    <!-- Pitch Deck -->
+                    <div class="glass-card p-6 rounded-2xl border-l-4 border-l-red-600 reveal" style="transition-delay: 0.1s">
+                        <h4 class="font-bold text-lg mb-3 tracking-tight">Pitch Deck</h4>
+                        <div class="space-y-2 text-sm">
+                            <p class="flex items-center gap-2 text-gray-400"><i data-lucide="phone" class="w-4 h-4 text-red-500"></i> SHREYA: +91 82965 47424</p>
+                            <p class="flex items-center gap-2 text-gray-400"><i data-lucide="phone" class="w-4 h-4 text-red-500"></i> VIGNESH: +91 96112 77448</p>
+                        </div>
+                    </div>
+                    <!-- Makeathon -->
+                    <div class="glass-card p-6 rounded-2xl border-l-4 border-l-red-600 reveal" style="transition-delay: 0.2s">
+                        <h4 class="font-bold text-lg mb-3 tracking-tight">Makeathon</h4>
+                        <div class="space-y-2 text-sm">
+                            <p class="flex items-center gap-2 text-gray-400"><i data-lucide="user" class="w-4 h-4 text-red-500"></i> Lead: Add Contact</p>
+                            <p class="flex items-center gap-2 text-gray-400"><i data-lucide="user" class="w-4 h-4 text-red-500"></i> Co-Lead: Add Contact</p>
+                        </div>
+                    </div>
+                    <!-- Play-Slay -->
+                    <div class="glass-card p-6 rounded-2xl border-l-4 border-l-red-600 reveal" style="transition-delay: 0.3s">
+                        <h4 class="font-bold text-lg mb-3 tracking-tight">Play-Slay</h4>
+                        <div class="space-y-2 text-sm">
+                            <p class="flex items-center gap-2 text-gray-400"><i data-lucide="user" class="w-4 h-4 text-red-500"></i> Lead: Add Contact</p>
+                            <p class="flex items-center gap-2 text-gray-400"><i data-lucide="user" class="w-4 h-4 text-red-500"></i> Co-Lead: Add Contact</p>
+                        </div>
+                    </div>
+                    <!-- Connect-4 -->
+                    <div class="glass-card p-6 rounded-2xl border-l-4 border-l-red-600 reveal" style="transition-delay: 0.4s">
+                        <h4 class="font-bold text-lg mb-3 tracking-tight">Connect-4</h4>
+                        <div class="space-y-2 text-sm">
+                            <p class="flex items-center gap-2 text-gray-400"><i data-lucide="user" class="w-4 h-4 text-red-500"></i> Lead: Add Contact</p>
+                            <p class="flex items-center gap-2 text-gray-400"><i data-lucide="user" class="w-4 h-4 text-red-500"></i> Co-Lead: Add Contact</p>
+                        </div>
+                    </div>
+                    <!-- Content Creation -->
+                    <div class="glass-card p-6 rounded-2xl border-l-4 border-l-red-600 reveal" style="transition-delay: 0.5s">
+                        <h4 class="font-bold text-lg mb-3 tracking-tight">Content Creation</h4>
+                        <div class="space-y-2 text-sm">
+                            <p class="flex items-center gap-2 text-gray-400"><i data-lucide="phone" class="w-4 h-4 text-red-500"></i> SARAVANAN: +91 89511 11403</p>
+                            <p class="flex items-center gap-2 text-gray-400"><i data-lucide="phone" class="w-4 h-4 text-red-500"></i> SHRUJAN: +91 96860 71191</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="bg-black py-12 px-6 border-t border-white/5 text-center">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 mb-8">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center font-bold">C</div>
+                    <span class="font-sync font-bold text-sm tracking-widest uppercase">IDT CLUB</span>
+                </div>
+                <div class="flex gap-6 text-gray-400">
+                    <a href="#" class="hover:text-red-500 transition-colors"><i data-lucide="instagram"></i></a>
+                    <a href="#" class="hover:text-red-500 transition-colors"><i data-lucide="linkedin"></i></a>
+                    <a href="#" class="hover:text-red-500 transition-colors"><i data-lucide="mail"></i></a>
+                </div>
+            </div>
+            <p class="text-gray-600 text-xs uppercase tracking-widest">© 2024 Creative Conclave • Made with ❤️ by IDT core commitee</p>
+        </footer>
+    </div>
+
+    <!-- EVENT DETAILS VIEW -->
+    <div id="event-details-view" class="bg-mesh">
+        <div class="max-w-5xl mx-auto py-12 px-6">
+            <button onclick="closeEventDetails()" class="flex items-center gap-2 text-gray-400 hover:text-white mb-10 transition-colors">
+                <i data-lucide="arrow-left"></i> Back to Home
+            </button>
+            <div class="grid md:grid-cols-5 gap-12">
+                <div class="md:col-span-3">
+                    <div id="event-icon" class="text-red-500 mb-6"></div>
+                    <h1 id="details-title" class="text-5xl font-sync font-bold mb-2 uppercase tracking-tight"></h1>
+                    <p id="details-tagline" class="text-red-500 font-sync text-sm mb-8 italic"></p>
+                    <div class="glass-card p-8 rounded-3xl mb-8">
+                        <h3 class="text-xl font-bold mb-6 border-b border-white/10 pb-4 tracking-tight">General Rules</h3>
+                        <ul id="details-rules" class="space-y-4 text-gray-400 list-disc pl-5"></ul>
+                    </div>
+                    <div class="flex gap-4 items-center">
+                        <div class="glass-card px-6 py-3 rounded-2xl text-center">
+                            <p class="text-xs text-gray-500 uppercase">Time</p>
+                            <p id="details-time" class="font-bold text-sm"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:col-span-2">
+                    <div class="glass-card p-6 rounded-3xl sticky top-10 text-center">
+                        <h3 class="text-xl font-bold mb-4 tracking-tight">Register Now</h3>
+                        <p class="text-sm text-gray-500 mb-6">Complete the form below to secure your entry.</p>
+                        <div class="bg-black/40 rounded-2xl p-8 border border-dashed border-white/20 mb-6">
+                            <i data-lucide="clipboard-list" class="w-12 h-12 mx-auto mb-4 text-gray-700"></i>
+                            <!-- DIRECT LINK TO FORM FROM DETAILS VIEW TOO -->
+                            <a id="register-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSf9xd8WVz2lFk1R2R1j6uP5AMZ8FxGW3lRI7FvwPYEnePTkRA/viewform?usp=dialog" target="_blank" class="block w-full btn-primary text-white py-3 rounded-xl font-bold uppercase tracking-widest text-sm">Open Google Form</a>
+                        </div>
+                        <p class="text-[10px] text-gray-600 uppercase">Participants will receive digital certificates</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const formLink = 'https://docs.google.com/forms/d/e/1FAIpQLSf9xd8WVz2lFk1R2R1j6uP5AMZ8FxGW3lRI7FvwPYEnePTkRA/viewform?usp=dialog';
+
+        const eventsData = {
+            'innovation-trail': { title: 'Innovation Trail', tagline: '4-path logical treasure hunt', time: '9:00 AM – 12:00 PM', icon: 'map', rules: ['Teams must consist of 3-4 members.', 'Use of mobile phones for solving logical riddles is permitted.', 'Trail consists of 4 paths; all must be completed.', 'Fastest team wins.'], formLink: formLink },
+            'pitch-deck': { title: 'Pitch Deck', tagline: 'Present your ideas', time: '9:00 AM – 12:00 PM', icon: 'presentation', rules: ['Individual or team (max 3).', '5 min pitch + 2 min Q&A.', 'Decks must be submitted 1 hour prior.', 'Judged on innovation and feasibility.'], formLink: formLink },
+            'makeathon': { title: 'Makeathon', tagline: 'Search. Scale. Solve', time: '1:00 PM – 3:30 PM', icon: 'hammer', rules: ['Problem statement provided at start.', 'Teams of 2-4 members.', 'Functional prototype required.', 'Solution must be scalable.'], formLink: formLink },
+            'play-slay': { title: 'Play-Slay', tagline: 'Play your game', time: '1:00 PM – 3:30 PM', icon: 'gamepad-2', rules: ['Tournament format: Single Elimination.', 'Players must follow official game rules.', 'Referees decision is final.', 'Unsportsmanlike conduct leads to DQ.'], formLink: formLink },
+            'connect-4': { title: 'Connect-4', tagline: 'Draw the logic', time: '1:30 PM – 3:30 PM', icon: 'grid-3x3', rules: ['Individual event.', 'Draw complex network visualizations.', 'Time limit: 60 minutes.', 'Materials provided.'], formLink: formLink },
+            'content-creation': { title: 'Content Creation', tagline: 'Find your inner director', time: '1:30 PM – 3:30 PM', icon: 'clapperboard', rules: ['Create a 60s summary reel.', 'All footage must be from event hours.', 'No stock footage.', 'Upload by 3:30 PM.'], formLink: formLink }
+        };
+
+        function showEventDetails(id) {
+            const data = eventsData[id];
+            document.getElementById('details-title').innerText = data.title;
+            document.getElementById('details-tagline').innerText = data.tagline;
+            document.getElementById('details-time').innerText = data.time;
+            document.getElementById('register-btn').href = data.formLink;
+            document.getElementById('event-icon').innerHTML = `<i data-lucide="${data.icon}" class="w-16 h-16"></i>`;
+            document.getElementById('details-rules').innerHTML = data.rules.map(r => `<li>${r}</li>`).join('');
+            document.body.classList.add('view-active');
+            window.scrollTo(0, 0);
+            lucide.createIcons();
+        }
+
+        function closeEventDetails() { 
+            document.body.classList.remove('view-active'); 
+        }
+
+        const target = new Date(); 
+        target.setDate(target.getDate() + 15);
+
+        function updateTimer() {
+            const now = new Date(); 
+            const diff = target - now;
+            if (diff > 0) {
+                document.getElementById('days').innerText = Math.floor(diff / 86400000).toString().padStart(2, '0');
+                document.getElementById('hours').innerText = Math.floor((diff / 3600000) % 24).toString().padStart(2, '0');
+                document.getElementById('minutes').innerText = Math.floor((diff / 60000) % 60).toString().padStart(2, '0');
+            }
+        }
+        setInterval(updateTimer, 1000); 
+        updateTimer();
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('active'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
