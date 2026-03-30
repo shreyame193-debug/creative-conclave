@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+
+
+       <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
@@ -30,7 +32,6 @@
             text-shadow: 0 0 10px rgba(255, 49, 49, 0.8), 0 0 20px rgba(255, 49, 49, 0.4);
         }
 
-        /* DYNAMIC BACKGROUND */
         .bg-mesh {
             position: fixed;
             inset: 0;
@@ -75,7 +76,6 @@
             box-shadow: 0 10px 30px rgba(255, 49, 49, 0.1);
         }
 
-        /* SMOOTH REVEALS */
         .reveal {
             opacity: 0;
             transform: translateY(30px);
@@ -114,7 +114,6 @@
             transform: scale(1.05);
         }
 
-        /* MEMORY WALL PERSISTENCE */
         .memory-fab {
             position: fixed;
             bottom: 30px;
@@ -443,10 +442,10 @@
         </section>
 
         <!-- FOOTER -->
-        <footer class="bg-black py-12 px-6 border-t border-white/5 text-center">
+        <footer class="bg-black py-12 px-6 border-t border-white/5 text-center transition-all duration-300">
             <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 mb-8">
                 <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center font-bold text-sm">C</div>
+                    <div class="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center font-bold text-sm shadow-[0_0_10px_rgba(255,49,49,0.2)]">C</div>
                     <span class="font-sync font-bold text-[10px] md:text-xs tracking-widest uppercase">IDT CLUB</span>
                 </div>
                 <div class="flex gap-8 text-gray-400">
@@ -468,7 +467,7 @@
                 </button>
                 <div class="text-center">
                     <h2 class="text-3xl md:text-6xl font-sync font-bold uppercase tracking-tight">Memory <span class="text-red-600 neon-glow">Wall</span></h2>
-                    <p class="text-gray-500 text-xs md:text-sm uppercase tracking-widest mt-2">Share your conclave memories with everyone</p>
+                    <p class="text-gray-500 text-xs md:text-sm uppercase tracking-widest mt-2">Shared moments from the symposium</p>
                 </div>
                 <div>
                     <label for="memory-upload" class="btn-primary text-white px-6 py-3 rounded-full text-xs md:text-sm font-bold uppercase tracking-widest cursor-pointer flex items-center gap-2">
@@ -477,10 +476,7 @@
                     <input type="file" id="memory-upload" class="hidden" accept="image/*" onchange="handleWallUpload(event)">
                 </div>
             </div>
-
-            <div id="wall-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
-                <!-- Data will be loaded from Firebase -->
-            </div>
+            <div id="wall-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6"></div>
         </div>
     </div>
 
@@ -520,38 +516,32 @@
                 <div class="md:col-span-2">
                     <div class="glass-card p-8 md:p-10 rounded-3xl sticky top-10 text-center border-red-500/10 bg-white/[0.02]">
                         <h3 class="text-lg md:text-2xl font-bold mb-4 tracking-tight uppercase text-white">Register Now</h3>
-                        <p class="text-xs md:text-sm text-gray-500 mb-8 leading-relaxed">Secure your slot via the official portal.</p>
                         <div class="bg-black/40 rounded-2xl p-8 border border-dashed border-white/10 mb-8 flex flex-col items-center">
-                            <div class="p-4 bg-red-600/10 rounded-full mb-6">
-                                <i data-lucide="clipboard-check" class="w-8 h-8 text-red-500"></i>
-                            </div>
+                            <i data-lucide="clipboard-check" class="w-8 h-8 text-red-500 mb-4"></i>
                             <a id="register-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSf9xd8WVz2lFk1R2R1j6uP5AMZ8FxGW3lRI7FvwPYEnePTkRA/viewform?usp=dialog" target="_blank" class="block w-full btn-primary text-white py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] md:text-sm shadow-xl shadow-red-600/10">Open Form</a>
                         </div>
-                        <p class="text-[8px] md:text-[10px] text-gray-600 uppercase tracking-widest">Digital certificates will be emailed to participants</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- FIREBASE AND CORE LOGIC -->
+    <!-- FIREBASE & LOGIC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Constants and Config
         const firebaseConfig = JSON.parse(__firebase_config);
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'creative-conclave-idt';
 
-        // State
         let user = null;
         let memories = [];
 
-        // Auth Flow - Combined Rule 3
+        // Corrected Auth initialization
         const initAuth = async () => {
             try {
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
@@ -559,30 +549,25 @@
                 } else {
                     await signInAnonymously(auth);
                 }
-            } catch (error) {
-                console.error("Auth error:", error);
+            } catch (err) {
+                console.error("Auth error:", err);
             }
         };
 
+        // Listen for user, THEN attach firestore listeners
         onAuthStateChanged(auth, (u) => {
             user = u;
             if (user) {
-                setupMemoriesListener();
+                const memoriesRef = collection(db, 'artifacts', appId, 'public', 'data', 'memories');
+                onSnapshot(memoriesRef, (snapshot) => {
+                    memories = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    memories.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+                    renderMemories();
+                }, (error) => {
+                    console.error("Firestore Listener Error:", error);
+                });
             }
         });
-
-        // Rule 2: Simple query, sort in JS
-        const setupMemoriesListener = () => {
-            if (!auth.currentUser) return;
-            const memoriesRef = collection(db, 'artifacts', appId, 'public', 'data', 'memories');
-            onSnapshot(memoriesRef, (snapshot) => {
-                memories = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                memories.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
-                renderMemories();
-            }, (error) => {
-                console.error("Firestore permission or access error:", error);
-            });
-        };
 
         window.openMemoryWall = () => {
             document.body.classList.add('wall-active');
@@ -614,16 +599,14 @@
             const grid = document.getElementById('wall-grid');
             if (!grid) return;
             grid.innerHTML = '';
-            
             memories.forEach(mem => {
                 const slot = document.createElement('div');
                 slot.className = 'memory-slot polaroid-frame reveal active';
                 slot.innerHTML = `<img src="${mem.image}" alt="Memory" loading="lazy">`;
                 grid.appendChild(slot);
             });
-
-            const remaining = 50 - memories.length;
-            for (let i = 0; i < Math.max(0, remaining); i++) {
+            const remaining = Math.max(0, 50 - memories.length);
+            for (let i = 0; i < remaining; i++) {
                 const slot = document.createElement('div');
                 slot.className = 'memory-slot polaroid-frame reveal active';
                 slot.innerHTML = `<i data-lucide="image" class="w-6 h-6 text-white/10"></i>`;
@@ -636,14 +619,13 @@
             document.body.classList.remove('view-active', 'wall-active');
         };
 
-        // UI Helpers
+        // UI Logic
         lucide.createIcons();
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('active'); });
         }, { threshold: 0.1 });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // Timer
         const targetDate = new Date(); targetDate.setDate(targetDate.getDate() + 15);
         setInterval(() => {
             const diff = targetDate - new Date();
@@ -654,21 +636,13 @@
             }
         }, 1000);
 
-        // Navbar Scroll
-        window.addEventListener('scroll', () => {
-            const nav = document.getElementById('navbar');
-            if(window.scrollY > 20) nav.classList.add('bg-black/80', 'backdrop-blur-xl', 'py-3', 'border-b', 'border-white/5');
-            else nav.classList.remove('bg-black/80', 'backdrop-blur-xl', 'py-3', 'border-b', 'border-white/5');
-        });
-
-        // Data Definitions
         const eventsData = {
-            'innovation-trail': { title: 'Innovation Trail', tagline: 'The ultimate logical hunt', time: '9:00 AM – 12:00 PM', icon: 'map', contacts: [{ name: 'RISHI', phone: '+91 98869 81655' }, { name: 'HASINI', phone: '+91 94815 72962' }], rules: ['Teams must consist of 3-4 members.', 'Mobile phones permitted for decryption.', 'Paths must be cleared in sequence.', 'Checkpoints require verification.', 'Shortest time wins.'] },
-            'pitch-deck': { title: 'Pitch Deck', tagline: 'Sell your vision', time: '9:00 AM – 12:00 PM', icon: 'presentation', contacts: [{ name: 'SHREYA', phone: '+91 82965 47424' }, { name: 'VIGNESH', phone: '+91 96112 77448' }], rules: ['Individual or team (max 3).', '.pdf or .pptx format required.', '5 min pitch + 3 min Q&A.', 'Submit 1 hour prior.', 'Criteria: Innovation, scalability.'] },
-            'makeathon': { title: 'Makeathon', tagline: 'Rapid Prototyping', time: '1:00 PM – 3:30 PM', icon: 'hammer', contacts: [{ name: 'Lead', phone: 'Add Contact' }], rules: ['Starts sharp at 1:00 PM.', 'Teams of 2-4.', 'Hardware/Software allowed.', 'UI/UX evaluated.', 'Original projects only.'] },
-            'play-slay': { title: 'Play-Slay', tagline: 'Esports Dominance', time: '1:00 PM – 3:30 PM', icon: 'gamepad-2', contacts: [{ name: 'Lead', phone: 'Add Contact' }], rules: ['Single Elimination bracket.', 'Personal peripherals allowed.', 'Zero toxicity policy.', 'No scripts/hacks.', 'Director decision final.'] },
-            'connect-4': { title: 'Connect-4', tagline: 'Logical Visualization', time: '1:30 PM – 3:30 PM', icon: 'grid-3x3', contacts: [{ name: 'Lead', phone: 'Add Contact' }], rules: ['Individual event.', 'Map interconnected data chains.', 'Materials provided.', '60 minute limit.', 'Accuracy evaluated.'] },
-            'content-creation': { title: 'Content Creation', tagline: 'The Storyteller', time: '1:30 PM – 3:30 PM', icon: 'clapperboard', contacts: [{ name: 'SARAVANAN', phone: '+91 89511 11403' }, { name: 'SHRUJAN', phone: '+91 96860 71191' }], rules: ['Max 60 sec cinematic reel.', 'Live footage only.', 'No stock/AI footage.', 'Submit by 3:30 PM.', 'Storytelling focus.'] }
+            'innovation-trail': { title: 'Innovation Trail', tagline: 'The ultimate logical hunt', time: '9:00 AM – 12:00 PM', icon: 'map', contacts: [{ name: 'RISHI', phone: '+91 98869 81655' }, { name: 'HASINI', phone: '+91 94815 72962' }], rules: ['Teams of 3-4.', 'Phones for decoding.', 'Clear 4 paths in sequence.', 'Checkpoints require verification.'] },
+            'pitch-deck': { title: 'Pitch Deck', tagline: 'Sell your vision', time: '9:00 AM – 12:00 PM', icon: 'presentation', contacts: [{ name: 'SHREYA', phone: '+91 82965 47424' }, { name: 'VIGNESH', phone: '+91 96112 77448' }], rules: ['Indiv/team (max 3).', '.pdf/.pptx required.', '5 min pitch + 3 min Q&A.', 'Submit 1h prior.'] },
+            'makeathon': { title: 'Makeathon', tagline: 'Rapid Prototyping', time: '1:00 PM – 3:30 PM', icon: 'hammer', contacts: [{ name: 'Lead', phone: 'Add Contact' }], rules: ['Starts 1:00 PM.', 'Teams of 2-4.', 'Hardware/Software allowed.', 'Evaluating UI/UX.'] },
+            'play-slay': { title: 'Play-Slay', tagline: 'Esports Dominance', time: '1:00 PM – 3:30 PM', icon: 'gamepad-2', contacts: [{ name: 'Lead', phone: 'Add Contact' }], rules: ['Knockout bracket.', 'Peripherals allowed.', 'No toxic behavior.', 'Fair play mandatory.'] },
+            'connect-4': { title: 'Connect-4', tagline: 'Logical Visualization', time: '1:30 PM – 3:30 PM', icon: 'grid-3x3', contacts: [{ name: 'Lead', phone: 'Add Contact' }], rules: ['Individual event.', 'Map data dots.', 'Materials provided.', '60 minute limit.'] },
+            'content-creation': { title: 'Content Creation', tagline: 'The Storyteller', time: '1:30 PM – 3:30 PM', icon: 'clapperboard', contacts: [{ name: 'SARAVANAN', phone: '+91 89511 11403' }, { name: 'SHRUJAN', phone: '+91 96860 71191' }], rules: ['Max 60 sec reel.', 'Live footage only.', 'No stock/AI footage.', 'Submit by 3:30 PM.'] }
         };
 
         window.showEventDetails = (id) => {
@@ -684,7 +658,6 @@
             lucide.createIcons();
         };
 
-        // Start initialization
         initAuth();
     </script>
 </body>
